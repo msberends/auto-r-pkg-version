@@ -473,11 +473,10 @@ Sarcomastigophora, or where the taxonomic genus is \emph{Absidia},
 \emph{Anaerosalibacter}, \emph{Apophysomyces}, \emph{Arachnia},
 \emph{Aspergillus}, \emph{Aureobacterium}, \emph{Aureobasidium},
 \emph{Bacteroides}, \emph{Basidiobolus}, \emph{Beauveria},
-\emph{Blastocystis}, \emph{Branhamella}, \emph{Borrelia},
-\emph{Calymmatobacterium}, \emph{Candida}, \emph{Capnocytophaga},
-\emph{Catabacter}, \emph{Chaetomium}, \emph{Chlamydia}, \emph{Chlamydophila},
+\emph{Blastocystis}, \emph{Branhamella}, \emph{Calymmatobacterium},
+\emph{Candida}, \emph{Capnocytophaga}, \emph{Catabacter}, \emph{Chaetomium},
 \emph{Chryseobacterium}, \emph{Chryseomonas}, \emph{Chrysonilia},
-\emph{Cladophialophora}, \emph{Cladosporium}, \emph{Conidiobolus},
+\emph{Cladophia\-lophora}, \emph{Cladosporium}, \emph{Conidiobolus},
 \emph{Cryptococcus}, \emph{Curvularia}, \emph{Exophiala},
 \emph{Exserohilum}, \emph{Fla\-vobacterium}, \emph{Fonsecaea},
 \emph{Fusarium}, \emph{Fusobacterium}, \emph{Hendersonula},
@@ -619,15 +618,15 @@ R> ab_name("J01CA04")
 If more than one antimicrobial agent is found in the input string, a warning
 with the additional findings is printed to the console.
 
-\subsubsection{Selecting and filtering data based on classes of antimicrobial agents}
+\subsubsection{Filtering data based on classes of antimicrobial agents}
 
 The application of the ATC classification system also enables grouping of
 antimicrobial agents for data analyses.  Data sets with microbial isolates
 can be filtered on isolates with specific results for tested antimicrobial
-agents in a specific antimicrobial class.  For example, \code{carbapenems()}
-can be used to select columns or filter rows based on any of the 14 available
-antimicrobial agents in the group of carbapenems according to the
-\code{antibiotics} data set.
+agents in a specific antimicrobial class.  For example, using
+\code{filter\_carbapenems(result = "R")} returns data of all isolates with
+tested resistance to any of the 14 available antimicrobial agents in in the
+group of carbapenems according to the \code{antibiotics} data set.
 
 \subsection{Working with antimicrobial susceptibility test results}
 
