@@ -18,8 +18,8 @@ jobs:
       - name: commit
         run: |
           # Stage the file, commit and push
-          git config user.name "github-actions"
-          git config user.email "6822431+github-actions@users.noreply.github.com"
+          git config user.name "github-AMR-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
           git commit -am "auto commit on branch ${GITHUB_REF##*/}" --author="${GITHUB_ACTOR} <${GITHUB_ACTOR}@users.noreply.github.com>"
           git push origin ${GITHUB_REF##*/}
