@@ -1,6 +1,6 @@
 on: push
 
-name: Commit date to ${GITHUB_REF##*/}
+name: Commit using GH Actions
 
 jobs:
   Testrun:
