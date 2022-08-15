@@ -2,8 +2,9 @@
 #
 # 1️⃣ Update the R package documentation using roxygen2
 # 2️⃣ Provide automated semantic versioning by analysing the latest tag name and commit index + 9000
-#    - tag "v1.2.3" and commit #5 in that tag will lead to "1.2.3.9005"
 #    - no tag and commit #5 will lead to "0.0.1.9005"
+#    - a new tag "v1.2.3" will lead to "1.2.3"
+#    - an existing tag "v1.2.3" and commit #5 in that tag will lead to "1.2.3.9005"
 #    - The files DESCRIPTION and NEWS.md will be updated
 #    - The file DESCRIPTION will also get an updated 'Date' field
 # ▶️ Amend changes to previous git commit and push to branch
@@ -69,17 +70,20 @@ jobs:
             echo "Message: tag ${currenttag} found"
             commitcount=`echo $currenttag | grep -o "[-]" | wc -l`
             if (( "$commitcount" < 1 )); then
-              # tag is new, so commit index must be 0
-              echo "Message: no previous commits found in tag ${currenttag}"
+              # tag is new, so this must become the version number
+              echo "Message: new tag ${currenttag} found"
               currentcommit=0
+              currentversion="$currenttag"
             else
               # determine commit count within tag
               currentcommit=`git describe --tags | sed 's/.*-\(.*\)-.*/\1/'`
               echo "Message: ${currentcommit} previous commits found in tag ${currenttag}"
             fi
           fi
-          # combine tag (e.g. 1.2.3) and commit number (like 5) increased by 9000 to indicate beta version
-          currentversion="$currenttag.$((currentcommit + 9000))" # results in e.g. 1.2.3.9005
+          if [ "$currentversion" = "" ]; then
+            # combine tag (e.g. 1.2.3) and commit number (like 5) increased by 9000 to indicate beta version
+            currentversion="$currenttag.$((currentcommit + 9000))" # results in e.g. 1.2.3.9005
+          fi
           echo "Message: current version will be v${currentversion}"
           echo "currentversion=${currentversion}" >> $GITHUB_ENV
           # set version number to files DESCRIPTION and NEWS.md
