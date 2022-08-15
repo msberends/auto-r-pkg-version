@@ -6,7 +6,7 @@
 #    - no tag and commit #5 will lead to "0.0.1.9005"
 #    - The files DESCRIPTION and NEWS.md will be updated
 #    - The file DESCRIPTION will also get an updated 'Date' field
-# ▶️ Git commit and push to current branch
+# ▶️ Amend changes to previous git commit and push to branch
 # 
 # 3️⃣ Create a website from the R documentation using pkgdown
 # ▶️ Git commit and push to the 'gh-pages' branch
@@ -97,10 +97,11 @@ jobs:
       - name: Commit to current branch (if needed)
         run: |
           if [[ `git status --porcelain` ]]; then
+            # Setting this bot as user and the actual 'actor' as author, will return a commit such as:
+            # "(Author) authored and github-action committed 1 minute ago"
             git config user.name "github-actions"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add .
-            # git commit -am "Auto-versioning to v${{ env.currentversion }}" --author="${GITHUB_ACTOR} <${GITHUB_ACTOR}@users.noreply.github.com>"
             git commit --amend --no-edit --author="${GITHUB_ACTOR} <${GITHUB_ACTOR}@users.noreply.github.com>"
             git push --force origin ${GITHUB_REF##*/}
           else 
