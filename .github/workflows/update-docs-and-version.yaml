@@ -35,19 +35,24 @@ jobs:
         run: |
           # get latest tags to create it
           git pull --tags
-          currenttagfull=`git describe --tags | sed 's/v//'`
+          currenttag=`git describe --tags | sed 's/v//'`
           if [ "$currenttag" = "" ]; then
-            currenttagfull="0.0.1"
-          fi
-          currenttagdashes=`echo $currenttag | grep -o "[-]" | wc -l`
-          echo "currenttagfull is ${currenttagfull}"
-          echo "currenttagdashes is ${currenttagdashes}"
-          if (( "$currenttagdashes" < 1 )); then
-            # so version number is like "1.0.0", commit nr is 0
-            currentcommit=0
+            # there is no tag, so set tag to 0.0.1 and commit index to current count
+            currenttag="0.0.1"
+            currentcommit=`git rev-list --count ${GITHUB_REF##*/}`
           else
-            currentcommit=`git describe --tags | sed 's/.*-\(.*\)-.*/\1/'`
+            # there is a tag, so base version number on that
+            commitcount=`echo $currenttag | grep -o "[-]" | wc -l`
+            if (( "$commitcount" < 1 )); then
+              # tag is new, so commit index must be 0
+              currentcommit=0
+            else
+              # determine commit count within tag
+              currentcommit=`git describe --tags | sed 's/.*-\(.*\)-.*/\1/'`
+            fi
           fi
+          echo "currenttag is ${currenttag}"
+          echo "currentcommit is ${currentcommit}"
           # combine tag (e.g. 1.2.3) and commit number (like 5) increased by 9000 to indicate beta version
           currentversion="$currenttag.$((currentcommit + 9000))" # results in e.g. 1.2.3.9005
           echo "currentversion=${currentversion}" >> $GITHUB_ENV
