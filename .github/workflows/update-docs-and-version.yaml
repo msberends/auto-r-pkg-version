@@ -44,13 +44,14 @@ jobs:
           # save package name to environment:
           currentpkg=`Rscript -e "cat(pkgload::pkg_name(), '\n')"`
           echo ${currentpkg}
-          currentpkg=`Rscript -e "cat(pkgload::pkg_name())"`
-          echo ${currentpkg}
-          currentpkg=`Rscript -e "message(pkgload::pkg_name())"`
-          echo ${currentpkg}
-          currentpkg=`Rscript -e "pkgload::pkg_name()"`
-          echo ${currentpkg}
+          #currentpkg=`Rscript -e "cat(pkgload::pkg_name())"`
+          #echo ${currentpkg}
+          #currentpkg=`Rscript -e "message(pkgload::pkg_name())"`
+          #echo ${currentpkg}
+          #currentpkg=`Rscript -e "pkgload::pkg_name()"`
+          #echo ${currentpkg}
           echo "currentpkg=${currentpkg}" >> $GITHUB_ENV
+          echo $GITHUB_ENV
           
       - name: Update Version Number
         run: |
