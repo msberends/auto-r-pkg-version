@@ -12,7 +12,7 @@ mean_test(x, y)
 \item{y}{a value}
 }
 \description{
-This is a test function.
+This is a test function. Here more text.
 }
 \examples{
 mean_test(1, 2)

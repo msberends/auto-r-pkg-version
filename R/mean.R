@@ -1,6 +1,6 @@
 #' Get the mean of two values
 #' 
-#' This is a test function.
+#' This is a test function. Here more text.
 #' @param x a value
 #' @param y a value
 #' @export
