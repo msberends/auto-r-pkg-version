@@ -16,6 +16,7 @@ on:
   push:
     # Run on any push:
     branches: '**'
+    tag: 'v*'
 
 name: Update docs and version number
 
