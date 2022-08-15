@@ -30,7 +30,7 @@ jobs:
           extra-packages: any::roxygen2
           
       # Run the updates
-      - name: Update Documentation
+      - name: Update R Documentation
         run: |
           Rscript -e "roxygen2::roxygenise()"
           
@@ -43,7 +43,8 @@ jobs:
             # there is no tag, so set tag to 0.0.1 and commit index to current count
             echo "Message: no git tags found, setting version to 0.0.1.*"
             currenttag="0.0.1"
-            currentcommit=`git rev-list --count ${GITHUB_REF##*/}`
+            # currentcommit=`git rev-list --count ${GITHUB_REF##*/}`
+            currentcommit=`git shortlog | grep -E '^[ ]+\w+' | wc -l`
           else
             # there is a tag, so base version number on that
             echo "Message: tag ${currenttag} found"
@@ -74,8 +75,12 @@ jobs:
       # Send updates to repo using GH Actions bot
       - name: Commit to Current Branch
         run: |
-          git config user.name "github-actions"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add .
-          git commit -am "Auto-update versioning to v${{ env.currentversion }}" --author="${GITHUB_ACTOR} <${GITHUB_ACTOR}@users.noreply.github.com>"
-          git push origin ${GITHUB_REF##*/}
+          if [[ `git status --porcelain` ]]; then
+            git config user.name "github-actions"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add .
+            git commit -am "Auto-update versioning to v${{ env.currentversion }}" --author="${GITHUB_ACTOR} <${GITHUB_ACTOR}@users.noreply.github.com>"
+            git push origin ${GITHUB_REF##*/}
+          else 
+            echo "No git changes, nothing to commit"
+          fi
