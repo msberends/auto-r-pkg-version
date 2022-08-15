@@ -47,7 +47,9 @@ jobs:
           currentversion="$currenttag.$((currentcommit + 9000))" # results in e.g. 1.2.3.9005
           # set version number to files DESCRIPTION and NEWS.md
           sed -i -- "s/^Version: .*/Version: ${currentversion}/" DESCRIPTION
-          sed -i -- "1s/.*/# v${currentversion}/" NEWS.md
+          if [ -e "NEWS.md" ] ; then
+            sed -i -- "1s/.*/# v${currentversion}/" NEWS.md
+          fi
           rm *-- || true
       
       # Send updates to repo using GH Actions bot
