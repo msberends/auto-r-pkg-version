@@ -42,17 +42,17 @@ jobs:
         run: |
           Rscript -e "roxygen2::roxygenise()"
           # save package name to environment:
-          currentpkg=`Rscript -e "pkgload::pkg_name()"`
+          currentpkg=`Rscript -e "cat(pkgload::pkg_name())"`
           echo "currentpkg=${currentpkg}" >> $GITHUB_ENV
           
       - name: Update Version Number
         run: |
           # get latest tags to create it
           git pull --tags
-          currenttag=`git describe --tags | sed 's/v//'`
+          currenttag=`git describe --tags | sed 's/[^0-9.]//'`
           if [ "$currenttag" = "" ]; then
             # there is no tag, so set tag to 0.0.1 and commit index to current count
-            echo "Message: no git tags found, setting version to 0.0.1.*"
+            echo "Message: no git tags found, setting version to 0.0.1.9xxx"
             currenttag="0.0.1"
             currentcommit=`git rev-list --count ${GITHUB_REF##*/}`
             # currentcommit=`git log | git shortlog | grep -E '^[ ]+\w+' | wc -l`
@@ -78,7 +78,7 @@ jobs:
           sed -i -- "s/^Version: .*/Version: ${currentversion}/" DESCRIPTION
           echo "Message: updated DESCRIPTION"
           if [ -e "NEWS.md" ]; then
-            sed -i -- "1s/.*/# ${currentpkg} v${currentversion}/" NEWS.md
+            sed -i -- "1s/.*/# `${currentpkg}` ${currentversion}/" NEWS.md
             echo "Message: updated NEWS.md"
           else
             echo "Message: no NEWS.md found!"
