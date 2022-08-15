@@ -20,8 +20,7 @@ jobs:
       # Set up R (current stable version) and developer tools
       - uses: actions/checkout@v3
         with:
-          ref: ${GITHUB_REF##*/} 
-          # ${{ env.BRANCH }}
+          ref: ${{ env.BRANCH }}
           fetch-depth: 0
         
       # - uses: r-lib/actions/setup-pandoc@v2
