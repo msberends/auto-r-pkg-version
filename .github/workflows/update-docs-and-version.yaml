@@ -80,6 +80,7 @@ jobs:
           echo "currentversion=${currentversion}" >> $GITHUB_ENV
           # set version number to files DESCRIPTION and NEWS.md
           sed -i -- "s/^Version: .*/Version: ${currentversion}/" DESCRIPTION
+          sed -i -- "s/^Date: .*/Date: ${date --iso-8601}/" DESCRIPTION
           echo "Message: updated DESCRIPTION"
           if [ -e "NEWS.md" ]; then
             echo ${currentpkg}
