@@ -34,11 +34,14 @@ jobs:
       - name: Update Version Number
         run: |
           # get latest tags to create it
-          git pull --tags --quiet
+          git pull --tags
           currenttagfull=`git describe --tags | sed 's/v//'`
+          if [ "$currenttagfull" = "" ];
+            currenttagfull="0.0.1"
+          fi
           currenttagdashes=`echo $currenttagfull | grep -o "[-]" | wc -l`
-          echo currenttagfull
-          echo currenttagdashes
+          echo "currenttagfull is ${currenttagfull}"
+          echo "currenttagdashes ${currenttagdashes}"
           if (( "$currenttagdashes" < 1 )); then
             # so version number is like "1.0.0", commit nr is 0
             currentcommit=0
@@ -46,7 +49,7 @@ jobs:
             currentcommit=`git describe --tags | sed 's/.*-\(.*\)-.*/\1/'`
           fi
           # combine tag (e.g. 1.2.3) and commit number (like 5) increased by 9000 to indicate beta version
-          currentversion="$currenttag.$((currentcommit + 9000))" # results in e.g. 1.2.3.9005
+          currentversion="$currenttagfull.$((currentcommit + 9000))" # results in e.g. 1.2.3.9005
           echo "currentversion=${currentversion}" >> $GITHUB_ENV
           # set version number to files DESCRIPTION and NEWS.md
           sed -i -- "s/^Version: .*/Version: ${currentversion}/" DESCRIPTION
