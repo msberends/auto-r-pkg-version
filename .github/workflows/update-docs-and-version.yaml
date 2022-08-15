@@ -42,11 +42,9 @@ jobs:
         run: |
           Rscript -e "roxygen2::roxygenise()"
           # save package name to environment:
-          currentpkg=`Rscript -e "pkgload::pkg_name()"`
+          currentpkg=`Rscript -e "cat(pkgload::pkg_name())\n")`
           echo ${currentpkg}
-          currentpkg=`Rscript -e "cat(pkgload::pkg_name()\n")`
-          echo ${currentpkg}
-          currentpkg=`Rscript -e "message(pkgload::pkg_name()\n")`
+          currentpkg=`Rscript -e "message(pkgload::pkg_name())\n")`
           echo ${currentpkg}
           currentpkg=`Rscript -e "pkgload::pkg_name()"`
           echo ${currentpkg}
