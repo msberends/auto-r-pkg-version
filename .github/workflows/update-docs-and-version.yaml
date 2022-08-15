@@ -1,13 +1,14 @@
-# This workflow does two things:
-# - Update the R package documentation using roxygen2
-# - Provide automated semantic versioning by analysing the latest tag name and commit index + 9000
-#   - tag "v1.2.3" and commit #5 in that tag will lead to "1.2.3.9005"
-#   - no tag and commit #5 will lead to "0.0.1.9005"
-#   - The files DESCRIPTION and NEWS.md will be updated
+# This workflow does three things:
+# 1. Update the R package documentation using roxygen2
+# 2. Provide automated semantic versioning by analysing the latest tag name and commit index + 9000
+#    - tag "v1.2.3" and commit #5 in that tag will lead to "1.2.3.9005"
+#    - no tag and commit #5 will lead to "0.0.1.9005"
+#    - The files DESCRIPTION and NEWS.md will be updated
+# 3. Create a website from the R documentation using pkgdown
 
-# Run on any push
 on:
   push:
+    # Run on any push:
     branches: '**'
 
 name: Update docs and version number
@@ -38,13 +39,14 @@ jobs:
           extra-packages: |
             any::pkgload
             any::roxygen2
+            any::pkgdown
 
       # Run the updates
       - name: Update R documentation
         run: |
           Rscript -e "roxygen2::roxygenise()"
           # save package name to environment:
-          currentpkg=`Rscript -e "cat(pkgload::pkg_name(), '\n')"`
+          currentpkg=`Rscript -e "cat(pkgload::pkg_name())"`
           echo "currentpkg=${currentpkg}" >> $GITHUB_ENV
           
       - name: Update Version Number
@@ -100,3 +102,10 @@ jobs:
           else 
             echo "No git changes, nothing to commit"
           fi
+
+      - name: Update Website
+        run: |
+          git config user.name "github-actions"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Rscript -e 'pkgdown::build_favicons()'
+          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE, clean = TRUE, branch = "gh-pages", commit_message = "Website for ${currentpkg} v${{ env.currentversion }}")'
