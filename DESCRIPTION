@@ -1,6 +1,6 @@
 Package: testpkg
 Title: This is a test
-Version: 0.0.1.9065
+Version: 0.0.1.9068
 Authors@R: c(
   person(given = c("Matthijs", "S."), 
          family = "Berends",
