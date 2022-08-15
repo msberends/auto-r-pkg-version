@@ -20,6 +20,8 @@ jobs:
       # Set up R (current stable version) and developer tools
       - uses: actions/checkout@v3
         with:
+          # important to get the whole history using this
+          # (see issue https://github.com/actions/checkout/issues/520)
           ref: ${{ env.BRANCH }}
           fetch-depth: 0
         
@@ -47,11 +49,8 @@ jobs:
             # there is no tag, so set tag to 0.0.1 and commit index to current count
             echo "Message: no git tags found, setting version to 0.0.1.*"
             currenttag="0.0.1"
-            git log | git shortlog
-            # currentcommit=`git rev-list --count ${GITHUB_REF##*/}`
-            echo "------"
-            git log | git shortlog | grep -E '^[ ]+\w+'
-            currentcommit=`git shortlog | grep -E '^[ ]+\w+' | wc -l`
+            currentcommit=`git rev-list --count ${GITHUB_REF##*/}`
+            # currentcommit=`git log | git shortlog | grep -E '^[ ]+\w+' | wc -l`
           else
             # there is a tag, so base version number on that
             echo "Message: tag ${currenttag} found"
@@ -72,10 +71,12 @@ jobs:
           echo "currentversion=${currentversion}" >> $GITHUB_ENV
           # set version number to files DESCRIPTION and NEWS.md
           sed -i -- "s/^Version: .*/Version: ${currentversion}/" DESCRIPTION
+          echo "Message: updated DESCRIPTION"
           if [ -e "NEWS.md" ]; then
             sed -i -- "1s/.*/# v${currentversion}/" NEWS.md
+            echo "Message: updated NEWS.md"
           else
-            echo "Message: no NEWS.md found"
+            echo "Message: no NEWS.md found!"
           fi
           # rm *-- || true # required for macOS
       
