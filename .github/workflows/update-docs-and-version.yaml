@@ -37,6 +37,8 @@ jobs:
           git pull --tags --quiet
           currenttagfull=`git describe --tags | sed 's/v//'`
           currenttagdashes=`echo $currenttagfull | grep -o "[-]" | wc -l`
+          echo currenttagfull
+          echo currenttagdashes
           if (( "$currenttagdashes" < 1 )); then
             # so version number is like "1.0.0", commit nr is 0
             currentcommit=0
@@ -45,6 +47,7 @@ jobs:
           fi
           # combine tag (e.g. 1.2.3) and commit number (like 5) increased by 9000 to indicate beta version
           currentversion="$currenttag.$((currentcommit + 9000))" # results in e.g. 1.2.3.9005
+          echo "currentversion=${currentversion}" >> $GITHUB_ENV
           # set version number to files DESCRIPTION and NEWS.md
           sed -i -- "s/^Version: .*/Version: ${currentversion}/" DESCRIPTION
           if [ -e "NEWS.md" ] ; then
@@ -58,5 +61,5 @@ jobs:
           git config user.name "github-actions"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -am "Update version to v${currentversion}" --author="${GITHUB_ACTOR} <${GITHUB_ACTOR}@users.noreply.github.com>"
+          git commit -am "Update version to v${{ env.currentversion }}" --author="${GITHUB_ACTOR} <${GITHUB_ACTOR}@users.noreply.github.com>"
           git push origin ${GITHUB_REF##*/}
