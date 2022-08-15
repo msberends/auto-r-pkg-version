@@ -111,4 +111,4 @@ jobs:
           git config user.name "github-actions"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Rscript -e 'pkgdown::build_favicons()'
-          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE, clean = TRUE, install = TRUE, branch = "gh-pages", commit_message = "Website for ${currentpkg} v${{ env.currentversion }}")'
+          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE, clean = TRUE, install = TRUE, branch = "gh-pages", commit_message = "Website update for ${{ env.currentpkg }} v${{ env.currentversion }}")'
