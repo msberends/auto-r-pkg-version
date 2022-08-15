@@ -43,10 +43,10 @@ jobs:
             # there is no tag, so set tag to 0.0.1 and commit index to current count
             echo "Message: no git tags found, setting version to 0.0.1.*"
             currenttag="0.0.1"
-            echo "${git shortlog | grep -E '^[ ]+\w+' | wc -l}"
+            echo ${git shortlog}
             git pull --force
             # currentcommit=`git rev-list --count ${GITHUB_REF##*/}`
-            echo "${git shortlog | grep -E '^[ ]+\w+' | wc -l}"
+            git shortlog | grep -E '^[ ]+\w+'
             currentcommit=`git shortlog | grep -E '^[ ]+\w+' | wc -l`
           else
             # there is a tag, so base version number on that
