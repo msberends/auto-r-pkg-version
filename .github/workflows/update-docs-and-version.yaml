@@ -59,7 +59,6 @@ jobs:
             echo "Message: no git tags found, setting version to 0.0.1.9xxx"
             currenttag="0.0.1"
             currentcommit=`git rev-list --count ${GITHUB_REF##*/}`
-            # currentcommit=`git log | git shortlog | grep -E '^[ ]+\w+' | wc -l`
           else
             # there is a tag, so base version number on that
             echo "Message: tag ${currenttag} found"
@@ -80,7 +79,7 @@ jobs:
           echo "currentversion=${currentversion}" >> $GITHUB_ENV
           # set version number to files DESCRIPTION and NEWS.md
           sed -i -- "s/^Version: .*/Version: ${currentversion}/" DESCRIPTION
-          sed -i -- "s/^Date: .*/Date: ${date --iso-8601}/" DESCRIPTION
+          sed -i -- "s/^Date: .*/Date: $(date --iso-8601)/" DESCRIPTION
           echo "Message: updated DESCRIPTION"
           if [ -e "NEWS.md" ]; then
             echo ${currentpkg}
