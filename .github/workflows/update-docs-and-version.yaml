@@ -49,7 +49,7 @@ jobs:
           currentpkg=`Rscript -e "cat(pkgload::pkg_name())"`
           echo "currentpkg=${currentpkg}" >> $GITHUB_ENV
           
-      - name: Update Version Number
+      - name: Update version number
         run: |
           # get latest tags to create it
           git pull --tags
@@ -91,7 +91,7 @@ jobs:
           # rm *-- || true # required for macOS
       
       # Send updates to repo using GH Actions bot
-      - name: Commit to current branch
+      - name: Commit to current branch (if needed)
         run: |
           if [[ `git status --porcelain` ]]; then
             git config user.name "github-actions"
@@ -103,9 +103,9 @@ jobs:
             echo "No git changes, nothing to commit"
           fi
 
-      - name: Update Website
+      - name: Create website in separate branch
         run: |
           git config user.name "github-actions"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Rscript -e 'pkgdown::build_favicons()'
-          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE, clean = TRUE, branch = "gh-pages", commit_message = "Website for ${currentpkg} v${{ env.currentversion }}")'
+          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE, clean = TRUE, install = TRUE, new_process = TRUE, branch = "gh-pages", commit_message = "Website for ${currentpkg} v${{ env.currentversion }}")'
