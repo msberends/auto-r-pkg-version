@@ -100,8 +100,9 @@ jobs:
             git config user.name "github-actions"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add .
-            git commit -am "Auto-versioning to v${{ env.currentversion }}" --author="${GITHUB_ACTOR} <${GITHUB_ACTOR}@users.noreply.github.com>"
-            git push origin ${GITHUB_REF##*/}
+            # git commit -am "Auto-versioning to v${{ env.currentversion }}" --author="${GITHUB_ACTOR} <${GITHUB_ACTOR}@users.noreply.github.com>"
+            git commit --amend --no-edit --author="${GITHUB_ACTOR} <${GITHUB_ACTOR}@users.noreply.github.com>"
+            git push --force origin ${GITHUB_REF##*/}
           else 
             echo "No git changes, nothing to commit"
           fi
