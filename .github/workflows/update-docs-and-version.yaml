@@ -18,40 +18,32 @@ jobs:
     continue-on-error: true
     steps:
       # Set up R (current stable version) and developer tools
-      - uses: actions/checkout@v3
-        with:
-          # important to get the whole history using this
-          # (see issue https://github.com/actions/checkout/issues/520)
-          ref: ${{ env.BRANCH }}
-          fetch-depth: 0
-        
-      # - uses: r-lib/actions/setup-pandoc@v2
-      - uses: r-lib/actions/setup-r@v2
-        with:
-          r-version: "release"
-          # use RStudio Package Manager (RSPM) to quickly install packages
-          use-public-rspm: true
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: |
-            any::pkgload
-            any::roxygen2
+      - name: Set up R and dependencies
+        - uses: actions/checkout@v3
+          with:
+            # important to get the whole history using this
+            # (see issue https://github.com/actions/checkout/issues/520)
+            ref: ${{ env.BRANCH }}
+            fetch-depth: 0
+        # - uses: r-lib/actions/setup-pandoc@v2
+        - uses: r-lib/actions/setup-r@v2
+          with:
+            r-version: "release"
+            # use RStudio Package Manager (RSPM) to quickly install packages
+            use-public-rspm: true
+        - uses: r-lib/actions/setup-r-dependencies@v2
+          with:
+            extra-packages: |
+              any::pkgload
+              any::roxygen2
           
       # Run the updates
-      - name: Update R Documentation
+      - name: Update R documentation
         run: |
           Rscript -e "roxygen2::roxygenise()"
           # save package name to environment:
           currentpkg=`Rscript -e "cat(pkgload::pkg_name(), '\n')"`
-          echo ${currentpkg}
-          #currentpkg=`Rscript -e "cat(pkgload::pkg_name())"`
-          #echo ${currentpkg}
-          #currentpkg=`Rscript -e "message(pkgload::pkg_name())"`
-          #echo ${currentpkg}
-          #currentpkg=`Rscript -e "pkgload::pkg_name()"`
-          #echo ${currentpkg}
           echo "currentpkg=${currentpkg}" >> $GITHUB_ENV
-          echo $GITHUB_ENV
           
       - name: Update Version Number
         run: |
@@ -86,7 +78,8 @@ jobs:
           sed -i -- "s/^Version: .*/Version: ${currentversion}/" DESCRIPTION
           echo "Message: updated DESCRIPTION"
           if [ -e "NEWS.md" ]; then
-            sed -i -- "1s/.*/# `${currentpkg}` ${currentversion}/" NEWS.md
+            echo ${currentpkg}
+            sed -i -- "1s/.*/# ${currentpkg} ${currentversion}/" NEWS.md
             echo "Message: updated NEWS.md"
           else
             echo "Message: no NEWS.md found!"
@@ -94,7 +87,7 @@ jobs:
           # rm *-- || true # required for macOS
       
       # Send updates to repo using GH Actions bot
-      - name: Commit to Current Branch
+      - name: Commit to current branch
         run: |
           if [[ `git status --porcelain` ]]; then
             git config user.name "github-actions"
