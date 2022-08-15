@@ -1,10 +1,15 @@
 # This workflow does three things:
-# 1. Update the R package documentation using roxygen2
-# 2. Provide automated semantic versioning by analysing the latest tag name and commit index + 9000
+#
+# 1️⃣ Update the R package documentation using roxygen2
+# 2️⃣ Provide automated semantic versioning by analysing the latest tag name and commit index + 9000
 #    - tag "v1.2.3" and commit #5 in that tag will lead to "1.2.3.9005"
 #    - no tag and commit #5 will lead to "0.0.1.9005"
 #    - The files DESCRIPTION and NEWS.md will be updated
-# 3. Create a website from the R documentation using pkgdown
+#    - The file DESCRIPTION will also get an updated 'Date' field
+# ▶️ Git commit and push to current branch
+# 
+# 3️⃣ Create a website from the R documentation using pkgdown
+# ▶️ Git commit and push to the 'gh-pages' branch
 
 on:
   push:
@@ -82,13 +87,11 @@ jobs:
           sed -i -- "s/^Date: .*/Date: $(date --iso-8601)/" DESCRIPTION
           echo "Message: updated DESCRIPTION"
           if [ -e "NEWS.md" ]; then
-            echo ${currentpkg}
             sed -i -- "1s/.*/# ${currentpkg} ${currentversion}/" NEWS.md
             echo "Message: updated NEWS.md"
           else
             echo "Message: no NEWS.md found!"
           fi
-          # rm *-- || true # required for macOS
       
       # Send updates to repo using GH Actions bot
       - name: Commit to current branch (if needed)
