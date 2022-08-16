@@ -69,8 +69,8 @@ jobs:
           else
             # there is a tag, so base version number on that
             echo "Message: tag ${currenttag} found"
-            commitcount=`echo $currenttag | grep -o "[-]" | wc -l`
-            if (( "$commitcount" < 1 )); then
+            commitcount=`echo $currenttag | grep -o "[.]" | wc -l`
+            if (( "$commitcount" == 2 )); then
               # tag is new, so this must become the version number
               echo "Message: new tag ${currenttag} found"
               currentcommit=0

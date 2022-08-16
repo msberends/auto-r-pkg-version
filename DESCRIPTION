@@ -1,6 +1,6 @@
 Package: testpkg
-Title: This is a test
-Version: 1.0.0
+Title: This is a test 123
+Version: 1.0.1
 Date: 2022-08-16
 Authors@R: c(
   person(given = c("Matthijs", "S."), 
