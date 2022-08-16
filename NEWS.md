@@ -1,4 +1,4 @@
-# testpkg 1.0.0-1-gab3a79e.9001
+# testpkg 1.0.0
 
 ## New
 

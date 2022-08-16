@@ -1,7 +1,7 @@
 Package: testpkg
 Title: This is a test
-Version: 1.0.0-1-gab3a79e.9001
-Date: 2022-08-15
+Version: 1.0.0
+Date: 2022-08-16
 Authors@R: c(
   person(given = c("Matthijs", "S."), 
          family = "Berends",
