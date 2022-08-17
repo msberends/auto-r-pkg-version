@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">testpkg</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.1.9031</span>
       </span>
     </div>
 
@@ -65,22 +65,22 @@
 <h3 id="automated-semantic-versioning-and-r-documentation-updates">Automated semantic versioning and R documentation updates<a class="anchor" aria-label="anchor" href="#automated-semantic-versioning-and-r-documentation-updates"></a>
 </h3>
 <p>After pulling this repo, do:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">git</span> config --local core.hooksPath <span class="st">".github/prehooks"</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="fu">chmod</span> +x .github/prehooks/pre-commit </a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> config <span class="at">--local</span> core.hooksPath <span class="st">".github/prehooks"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> +x .github/prehooks/pre-commit </span></code></pre></div>
 <p>Now, when using <code>git commit</code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">git</span> commit -am <span class="st">"test 5"</span></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="co"># Running pre-commit hook...</span></a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="co"># &gt;&gt;  Updating R documentation...</span></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="co"># &gt;&gt;  done.</span></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="co"># &gt;&gt;  </span></a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="co"># &gt;&gt;  Updating semantic versioning and date...</span></a>
-<a class="sourceLine" id="cb2-7" title="7"><span class="co"># &gt;&gt;  - latest tag is 'v1.0.1', with 26 previous commits</span></a>
-<a class="sourceLine" id="cb2-8" title="8"><span class="co"># &gt;&gt;  - testpkg pkg version set to 1.0.1.9027</span></a>
-<a class="sourceLine" id="cb2-9" title="9"><span class="co"># &gt;&gt;  - updated DESCRIPTION</span></a>
-<a class="sourceLine" id="cb2-10" title="10"><span class="co"># &gt;&gt;  - updated NEWS.md</span></a>
-<a class="sourceLine" id="cb2-11" title="11"><span class="co"># &gt;&gt;  </span></a>
-<a class="sourceLine" id="cb2-12" title="12"><span class="co"># [main 300b93e] test8</span></a>
-<a class="sourceLine" id="cb2-13" title="13"><span class="co">#  3 files changed, 3 insertions(+), 4 deletions(-)</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> commit <span class="at">-am</span> <span class="st">"test commit"</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Running pre-commit hook...</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt;&gt;  Updating R documentation...</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt;&gt;  done.</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt;&gt;  </span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt;&gt;  Updating semantic versioning and date...</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt;&gt;  - latest tag is 'v1.0.1', with 26 previous commits</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt;&gt;  - testpkg pkg version set to 1.0.1.9027</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt;&gt;  - updated DESCRIPTION</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt;&gt;  - updated NEWS.md</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># &gt;&gt;  </span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># [main 300b93e] test commit</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#  3 files changed, 3 insertions(+), 4 deletions(-)</span></span></code></pre></div>
 </div>
 </div>
   </div>
