@@ -23,11 +23,10 @@ if [ "$currenttag" = "" ]; then
 else
   # there is a tag, so base version number on that
   echo "- tag ${currenttag} found"
-  commitcount=`git rev-list --count ${currenttag}..HEAD`
-  if (( "$commitcount" == 0 )); then
+  currentcommit=`git rev-list --count ${currenttag}..HEAD`
+  if (( "$currentcommit" == 0 )); then
     # tag is new, so this must become the version number
     echo "- tag ${currenttag} has no previous commits"
-    currentcommit=0
     currentversion="$currenttag"
   else
     # determine commit count within tag
@@ -38,7 +37,7 @@ if [ "$currentversion" = "" ]; then
   # combine tag (e.g. 1.2.3) and commit number (like 5) increased by 9000 to indicate beta version
   currentversion="$currenttag.$((currentcommit + 9000))" # results in e.g. 1.2.3.9005
 fi
-echo "- current version will be v${currentversion}"
+echo "- current version set to v${currentversion}"
 
 # set version number and date to DESCRIPTION file
 sed -i -- "s/^Version: .*/Version: ${currentversion}/" DESCRIPTION
