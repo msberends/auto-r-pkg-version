@@ -2,11 +2,10 @@
 
 ### Automated semantic versioning and R documentation updates
 
-After pulling this repo, do:
+After pulling this repo, set up the pre-commit hook by running:
 
 ```bash
 git config --local core.hooksPath ".github/prehooks"
-chmod +x .github/prehooks/pre-commit 
 ```
 
 Now, when using `git commit`:
