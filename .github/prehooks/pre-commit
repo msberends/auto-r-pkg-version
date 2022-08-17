@@ -1,7 +1,6 @@
 #!/bin/sh
 
 echo "Running pre-commit hook..."
-echo ">>  "
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 echo ">>  Updating R documentation..."
@@ -68,4 +67,4 @@ if [ -e "NEWS.md" ]; then
 else
   echo ">>  - no NEWS.md found!"
 fi
-echo
+echo ">>  "
