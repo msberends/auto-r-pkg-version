@@ -2,9 +2,7 @@
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 echo "Updating R documentation..."
-if command -v Rscript123 > /dev/null; then
-  echo "R is not available on your system!"
-else
+if command -v Rscript > /dev/null; then
   if [ "$(Rscript -e 'cat(all(c('"'roxygen2'"', '"'pkgload'"') %in% rownames(installed.packages())))')" == "TRUE" ]; then
     Rscript -e "suppressMessages(roxygen2::roxygenise())"
     currentpkg=`Rscript -e "cat(pkgload::pkg_name())"`
@@ -13,6 +11,8 @@ else
   else
     echo "R packages 'roxygen2' and 'pkgload' are not installed!"
   fi
+else
+  echo "R is not available on your system!"
 fi
 echo
 
