@@ -15,7 +15,7 @@ echo "Updating semantic versioning..."
 
 git pull --tags --quiet
 currenttagfull=`git describe --tags --abbrev=0`
-currenttag=`$currenttagfull | sed 's/v//'`
+currenttag=`${currenttagfull} | sed 's/v//'`
 if [ "$currenttag" = "" ]; then
   # there is no tag, so set tag to 0.0.1 and commit index to current count
   echo "- no git tags found, setting version to 0.0.1.9xxx"
