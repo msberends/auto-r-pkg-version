@@ -1,59 +1,64 @@
 #!/bin/sh
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo "UPDATING R DOCUMENTATION"
+echo "Updating R documentation..."
 
 Rscript -e "suppressMessages(roxygen2::roxygenise())"
 currentpkg=`Rscript -e "cat(pkgload::pkg_name())"`
 git add *.Rd
-echo .
+echo "done."
+echo
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# echo "UPDATING SEMANTIC VERSIONING"
+# echo "Updating semantic versioning..."
 
-# get latest tags to create it
 git pull --tags --quiet
 currenttag=`git describe --tags --abbrev=0 | sed 's/v//'`
 if [ "$currenttag" = "" ]; then
   # there is no tag, so set tag to 0.0.1 and commit index to current count
-  echo "Message: no git tags found, setting version to 0.0.1.9xxx"
+  echo "- no git tags found, setting version to 0.0.1.9xxx"
   currenttag="0.0.1"
   currentcommit=`git rev-list --count ${GITHUB_REF##*/}`
 else
   # there is a tag, so base version number on that
-  echo "Message: tag ${currenttag} found"
+  echo "- tag ${currenttag} found"
   commitcount=`echo $currenttag | grep -o "[.]" | wc -l`
   if (( "$commitcount" == 2 )); then
     # tag is new, so this must become the version number
-    echo "Message: new tag ${currenttag} found"
+    echo "- new tag ${currenttag} found"
     currentcommit=0
     currentversion="$currenttag"
   else
     # determine commit count within tag
     currentcommit=`git describe --tags | sed 's/.*-\(.*\)-.*/\1/'`
-    echo "Message: ${currentcommit} previous commits found in tag ${currenttag}"
+    echo "- ${currentcommit} previous commits found in tag ${currenttag}"
   fi
 fi
 if [ "$currentversion" = "" ]; then
   # combine tag (e.g. 1.2.3) and commit number (like 5) increased by 9000 to indicate beta version
   currentversion="$currenttag.$((currentcommit + 9000))" # results in e.g. 1.2.3.9005
 fi
-echo "Message: current version will be v${currentversion}"
+echo "- current version will be v${currentversion}"
 
 # set version number and date to DESCRIPTION file
 sed -i -- "s/^Version: .*/Version: ${currentversion}/" DESCRIPTION
 sed -i -- "s/^Date: .*/Date: $(date '+%Y-%m-%d')/" DESCRIPTION
-echo "Message: updated DESCRIPTION"
+echo "- updated DESCRIPTION"
+# remove leftover on macOS
 rm DESCRIPTION--
+# add to commit
 git add DESCRIPTION
 
 # set version number to NEWS file
 if [ -e "NEWS.md" ]; then
   sed -i -- "1s/.*/# ${currentpkg} ${currentversion}/" NEWS.md
-  echo "Message: updated NEWS.md"
+  echo "- updated NEWS.md"
+  # remove leftover on macOS
   rm NEWS.md--
+  # add to commit
   git add NEWS.md
 else
-  echo "Message: no NEWS.md found!"
+  echo "- no NEWS.md found!"
 fi
+echo
