@@ -13,12 +13,16 @@ Now, when using `git commit`:
 
 ```bash
 git commit -am "test 5"
-# Updating R documentation...
-# done.
-# 
-# Updating semantic versioning...
-# - latest tag is v1.0.1, with 12 previous commits
-# - version set to v1.0.1.9013
-# - updated DESCRIPTION
-# - updated NEWS.md
+# Running pre-commit hook...
+# >>  Updating R documentation...
+# >>  done.
+# >>  
+# >>  Updating semantic versioning and date...
+# >>  - latest tag is 'v1.0.1', with 26 previous commits
+# >>  - testpkg pkg version set to 1.0.1.9027
+# >>  - updated DESCRIPTION
+# >>  - updated NEWS.md
+# >>  
+# [main 300b93e] test8
+#  3 files changed, 3 insertions(+), 4 deletions(-)
 ```
