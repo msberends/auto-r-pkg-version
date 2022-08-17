@@ -5,13 +5,13 @@ echo "Updating R documentation..."
 
 Rscript -e "suppressMessages(roxygen2::roxygenise())"
 currentpkg=`Rscript -e "cat(pkgload::pkg_name())"`
-git add *.Rd
+git add man/*
 echo "done."
 echo
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# echo "Updating semantic versioning..."
+echo "Updating semantic versioning..."
 
 git pull --tags --quiet
 currenttag=`git describe --tags --abbrev=0 | sed 's/v//'`
