@@ -28,13 +28,13 @@ else
     # tag is new, so this must become the version number
     currentversion="$currenttag"
   fi
-  echo "- tag ${currenttagfull} found, with ${currentcommit} previous commits"
+  echo "- latest tag is ${currenttagfull}, with ${currentcommit} previous commits"
 fi
 if [ "$currentversion" = "" ]; then
   # combine tag (e.g. 1.2.3) and commit number (like 5) increased by 9000 to indicate beta version
   currentversion="$currenttag.$((currentcommit + 9001))" # results in e.g. 1.2.3.9005
 fi
-echo "- current version set to v${currentversion}"
+echo "- ${currentpkg} pkg version set to v${currentversion}"
 
 # set version number and date to DESCRIPTION file
 sed -i -- "s/^Version: .*/Version: ${currentversion}/" DESCRIPTION
