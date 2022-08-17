@@ -24,7 +24,8 @@ echo ">>  "
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 echo ">>  Updating semantic versioning and date..."
 
-git pull --tags --quiet
+# get tags from remote, and remove tags not on remote:
+git fetch origin --prune --prune-tags --quiet
 currenttagfull=`git describe --tags --abbrev=0`
 currenttag=`git describe --tags --abbrev=0 | sed 's/v//'`
 if [ "$currenttag" = "" ]; then
