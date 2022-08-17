@@ -14,7 +14,8 @@ echo
 echo "Updating semantic versioning..."
 
 git pull --tags --quiet
-currenttag=`git describe --tags --abbrev=0 | sed 's/v//'`
+currenttagfull=`git describe --tags --abbrev=0`
+currenttag=`$currenttagfull | sed 's/v//'`
 if [ "$currenttag" = "" ]; then
   # there is no tag, so set tag to 0.0.1 and commit index to current count
   echo "- no git tags found, setting version to 0.0.1.9xxx"
@@ -23,7 +24,7 @@ if [ "$currenttag" = "" ]; then
 else
   # there is a tag, so base version number on that
   echo "- tag ${currenttag} found"
-  currentcommit=`git rev-list --count ${currenttag}..HEAD`
+  currentcommit=`git rev-list --count ${currenttagfull}..HEAD`
   if (( "$currentcommit" == 0 )); then
     # tag is new, so this must become the version number
     echo "- tag ${currenttag} has no previous commits"
