@@ -58,8 +58,17 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div class="section level1"><div class="page-header"><h1 id="test">test<a class="anchor" aria-label="anchor" href="#test"></a>
-</h1></div></div>
+<div class="section level1">
+<div class="page-header"><h1 id="test">test<a class="anchor" aria-label="anchor" href="#test"></a>
+</h1></div>
+<div class="section level2">
+<h2 id="set-up-git-prehook-for-automated-semantic-versioning-and-r-documentation-updates">Set up Git prehook for automated semantic versioning and R documentation updates<a class="anchor" aria-label="anchor" href="#set-up-git-prehook-for-automated-semantic-versioning-and-r-documentation-updates"></a>
+</h2>
+<p>After pulling this repo, do:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">git</span> config --local core.hooksPath <span class="st">".github/prehooks"</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="fu">chmod</span> +x .github/prehooks/pre-commit </a></code></pre></div>
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
