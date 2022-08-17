@@ -19,19 +19,18 @@ if [ "$currenttag" = "" ]; then
   # there is no tag, so set tag to 0.0.1 and commit index to current count
   echo "- no git tags found, setting version to 0.0.1.9xxx"
   currenttag="0.0.1"
-  currentcommit=`git rev-list --count ${GITHUB_REF##*/}`
+  currentcommit=`git rev-list --count HEAD`
 else
   # there is a tag, so base version number on that
   echo "- tag ${currenttag} found"
-  commitcount=`echo $currenttag | grep -o "[.]" | wc -l`
-  if (( "$commitcount" == 2 )); then
+  commitcount=`git rev-list --count ${currenttag}..HEAD`
+  if (( "$commitcount" == 0 )); then
     # tag is new, so this must become the version number
-    echo "- new tag ${currenttag} found"
+    echo "- tag ${currenttag} has no previous commits"
     currentcommit=0
     currentversion="$currenttag"
   else
     # determine commit count within tag
-    currentcommit=`git describe --tags | sed 's/.*-\(.*\)-.*/\1/'`
     echo "- ${currentcommit} previous commits found in tag ${currenttag}"
   fi
 fi
