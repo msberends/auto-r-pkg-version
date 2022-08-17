@@ -1,121 +1,19 @@
-# This workflow does three things:
-#
-# 1️⃣ Update the R package documentation using roxygen2
-# 2️⃣ Provide automated semantic versioning by analysing the latest tag name and commit index + 9000
-#    - no tag and commit #5 will lead to "0.0.1.9005"
-#    - a new tag "v1.2.3" will lead to "1.2.3"
-#    - an existing tag "v1.2.3" and commit #5 in that tag will lead to "1.2.3.9005"
-#    - The files DESCRIPTION and NEWS.md will be updated
-#    - The file DESCRIPTION will also get an updated 'Date' field
-# ▶️ Amend changes to previous git commit and push to branch
-# 
-# 3️⃣ Create a website from the R documentation using pkgdown
-# ▶️ Git commit and push to the 'gh-pages' branch
+# Create a website from the R documentation using pkgdown
+# Git commit and push to the 'gh-pages' branch
 
 on:
   push:
-    # Run on any push:
-    branches: '**'
-    tag: 'v*'
+    # only on main
+    branches: 'main'
 
-name: Update docs and version number
+name: Update website
 
 jobs:
-  Update-docs-and-version:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-    steps:
-      # Set up R (current stable version) and developer tools
-      - name: Retrieve git repository
-        uses: actions/checkout@v3
-        with:
-            # important to get the whole history using this
-            # (see issue https://github.com/actions/checkout/issues/520)
-            ref: ${{ env.BRANCH }}
-            fetch-depth: 0
-        # - uses: r-lib/actions/setup-pandoc@v2
-      - name: Set up R
-        uses: r-lib/actions/setup-r@v2
-        with:
-            r-version: "release"
-            # use RStudio Package Manager (RSPM) to quickly install packages
-            use-public-rspm: true
-      - name: Set up R dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: |
-            any::pkgload
-            any::roxygen2
-            any::pkgdown
-
-      # Run the updates
-      - name: Update R documentation
-        run: |
-          Rscript -e "roxygen2::roxygenise()"
-          # save package name to environment:
-          currentpkg=`Rscript -e "cat(pkgload::pkg_name())"`
-          echo "currentpkg=${currentpkg}" >> $GITHUB_ENV
-          
-      - name: Update version number
-        run: |
-          # get latest tags to create it
-          git pull --tags
-          currenttag=`git describe --tags --abbrev=0 | sed 's/v//'`
-          if [ "$currenttag" = "" ]; then
-            # there is no tag, so set tag to 0.0.1 and commit index to current count
-            echo "Message: no git tags found, setting version to 0.0.1.9xxx"
-            currenttag="0.0.1"
-            currentcommit=`git rev-list --count ${GITHUB_REF##*/}`
-          else
-            # there is a tag, so base version number on that
-            echo "Message: tag ${currenttag} found"
-            commitcount=`echo $currenttag | grep -o "[.]" | wc -l`
-            if (( "$commitcount" == 2 )); then
-              # tag is new, so this must become the version number
-              echo "Message: new tag ${currenttag} found"
-              currentcommit=0
-              currentversion="$currenttag"
-            else
-              # determine commit count within tag
-              currentcommit=`git describe --tags | sed 's/.*-\(.*\)-.*/\1/'`
-              echo "Message: ${currentcommit} previous commits found in tag ${currenttag}"
-            fi
-          fi
-          if [ "$currentversion" = "" ]; then
-            # combine tag (e.g. 1.2.3) and commit number (like 5) increased by 9000 to indicate beta version
-            currentversion="$currenttag.$((currentcommit + 9000))" # results in e.g. 1.2.3.9005
-          fi
-          echo "Message: current version will be v${currentversion}"
-          echo "currentversion=${currentversion}" >> $GITHUB_ENV
-          # set version number to files DESCRIPTION and NEWS.md
-          sed -i -- "s/^Version: .*/Version: ${currentversion}/" DESCRIPTION
-          sed -i -- "s/^Date: .*/Date: $(date --iso-8601)/" DESCRIPTION
-          echo "Message: updated DESCRIPTION"
-          if [ -e "NEWS.md" ]; then
-            sed -i -- "1s/.*/# ${currentpkg} ${currentversion}/" NEWS.md
-            echo "Message: updated NEWS.md"
-          else
-            echo "Message: no NEWS.md found!"
-          fi
-      
+  update-website:
       # Send updates to repo using GH Actions bot
-      - name: Commit to current branch (if needed)
-        run: |
-          if [[ `git status --porcelain` ]]; then
-            # Setting this bot as user and the actual 'actor' as author, will return a commit such as:
-            # "(Author) authored and github-action committed 1 minute ago"
-            git config user.name "github-actions"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add .
-            # git commit --amend --no-edit --author="${GITHUB_ACTOR} <${GITHUB_ACTOR}@users.noreply.github.com>"
-            # git push --force origin ${GITHUB_REF##*/}
-          else 
-            echo "No git changes, nothing to commit"
-          fi
-
       - name: Create website in separate branch
         run: |
           git config user.name "github-actions"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Rscript -e 'pkgdown::build_favicons()'
-          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE, clean = TRUE, install = TRUE, branch = "gh-pages", commit_message = "Website update for ${{ env.currentpkg }} v${{ env.currentversion }}")'
+          Rscript -e 'pkgdown::deploy_to_branch(new_process = FALSE, clean = TRUE, install = TRUE, branch = "gh-pages")'

@@ -12,7 +12,7 @@ chmod +x .github/prehooks/pre-commit
 Now, when using `git commit`:
 
 ```bash
-git commit -am "test 5"
+git commit -am "test commit"
 # Running pre-commit hook...
 # >>  Updating R documentation...
 # >>  done.
@@ -23,6 +23,6 @@ git commit -am "test 5"
 # >>  - updated DESCRIPTION
 # >>  - updated NEWS.md
 # >>  
-# [main 300b93e] test8
+# [main 300b93e] test commit
 #  3 files changed, 3 insertions(+), 4 deletions(-)
 ```
