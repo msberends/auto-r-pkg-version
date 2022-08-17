@@ -3,6 +3,7 @@
 #' This is a test function. Here more text.
 #' @param x a value
 #' @param y a value
+#' @details This will update the documentation :)
 #' @export
 #' @examples 
 #' mean_test(1, 2)

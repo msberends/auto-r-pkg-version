@@ -14,6 +14,9 @@ mean_test(x, y)
 \description{
 This is a test function. Here more text.
 }
+\details{
+This will update the documentation :)
+}
 \examples{
 mean_test(1, 2)
 }
