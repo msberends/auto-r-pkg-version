@@ -61,12 +61,22 @@
 <div class="section level1">
 <div class="page-header"><h1 id="test">test<a class="anchor" aria-label="anchor" href="#test"></a>
 </h1></div>
-<div class="section level2">
-<h2 id="set-up-git-prehook-for-automated-semantic-versioning-and-r-documentation-updates">Set up Git prehook for automated semantic versioning and R documentation updates<a class="anchor" aria-label="anchor" href="#set-up-git-prehook-for-automated-semantic-versioning-and-r-documentation-updates"></a>
-</h2>
+<div class="section level3">
+<h3 id="automated-semantic-versioning-and-r-documentation-updates">Automated semantic versioning and R documentation updates<a class="anchor" aria-label="anchor" href="#automated-semantic-versioning-and-r-documentation-updates"></a>
+</h3>
 <p>After pulling this repo, do:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="fu">git</span> config --local core.hooksPath <span class="st">".github/prehooks"</span></a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="fu">chmod</span> +x .github/prehooks/pre-commit </a></code></pre></div>
+<p>Now, when using <code>git commit</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" title="1"><span class="fu">git</span> commit -am <span class="st">"test 5"</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co"># Updating R documentation...</span></a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="co"># done.</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co"># </span></a>
+<a class="sourceLine" id="cb2-5" title="5"><span class="co"># Updating semantic versioning...</span></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="co"># - latest tag is v1.0.1, with 12 previous commits</span></a>
+<a class="sourceLine" id="cb2-7" title="7"><span class="co"># - version set to v1.0.1.9013</span></a>
+<a class="sourceLine" id="cb2-8" title="8"><span class="co"># - updated DESCRIPTION</span></a>
+<a class="sourceLine" id="cb2-9" title="9"><span class="co"># - updated NEWS.md</span></a></code></pre></div>
 </div>
 </div>
   </div>
