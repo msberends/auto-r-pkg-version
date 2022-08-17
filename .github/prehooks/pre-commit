@@ -18,25 +18,21 @@ currenttagfull=`git describe --tags --abbrev=0`
 currenttag=`git describe --tags --abbrev=0 | sed 's/v//'`
 if [ "$currenttag" = "" ]; then
   # there is no tag, so set tag to 0.0.1 and commit index to current count
-  echo "- no git tags found, setting version to 0.0.1.9xxx"
+  echo "- no git tags found, create some using v(x).(y).(z)"
   currenttag="0.0.1"
   currentcommit=`git rev-list --count HEAD`
 else
   # there is a tag, so base version number on that
-  echo "- tag ${currenttag} found"
   currentcommit=`git rev-list --count ${currenttagfull}..HEAD`
   if (( "$currentcommit" == 0 )); then
     # tag is new, so this must become the version number
-    echo "- tag ${currenttag} has no previous commits"
     currentversion="$currenttag"
-  else
-    # determine commit count within tag
-    echo "- ${currentcommit} previous commits found in tag ${currenttag}"
   fi
+  echo "- tag ${currenttagfull} found, with ${currentcommit} previous commits"
 fi
 if [ "$currentversion" = "" ]; then
   # combine tag (e.g. 1.2.3) and commit number (like 5) increased by 9000 to indicate beta version
-  currentversion="$currenttag.$((currentcommit + 9000))" # results in e.g. 1.2.3.9005
+  currentversion="$currenttag.$((currentcommit + 9001))" # results in e.g. 1.2.3.9005
 fi
 echo "- current version set to v${currentversion}"
 
